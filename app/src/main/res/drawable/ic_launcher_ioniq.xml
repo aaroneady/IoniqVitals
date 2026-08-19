@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive-icon foreground: the comic Ioniq 5 (front, lights on), inset so the round/squircle
+     launcher masks don't crop the car. Background is @color/ic_launcher_background. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ioniq_5_front_lights_on_comic_book_style"
+    android:inset="25%" />

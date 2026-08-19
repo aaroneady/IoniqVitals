@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<automotiveApp xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Media surface (working): sideloaded app lists via its MediaBrowserService. "media" required
+         for the app to appear; "template" kept for an allowlisted / AAOS host. -->
+    <uses name="template" />
+    <uses name="media" />
+</automotiveApp>

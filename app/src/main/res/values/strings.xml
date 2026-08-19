@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ioniq Vitals</string>
+    <string name="vehicle_status_title">Vehicle Status</string>
+    <string name="obd_notification_title">Ioniq 5 OBD</string>
+    <string name="obd_notification_text">Reading battery data from dongle</string>
+    <string name="connect_obd">Connect OBD</string>
+    <string name="disconnect_obd">Disconnect OBD</string>
+    <string name="refresh_adapters">Refresh paired adapters</string>
+    <string name="waiting_for_obd">Waiting for OBD connection…</string>
+    <string name="select_adapter_hint">Choose your paired adapter, then tap Connect.</string>
+    <string name="no_paired_adapters_hint">No paired Bluetooth adapters found. Pair your dongle in system settings first.</string>
+    <string name="bluetooth_disabled_hint">Turn on Bluetooth to list paired OBD adapters.</string>
+    <string name="no_obd_adapter_selected">Select a paired OBD adapter in the phone app first.</string>
+    <string name="adapter_spinner_placeholder">Select OBD adapter…</string>
+    <string name="mock_obd_adapter">Mock OBD Adapter (Simulator)</string>
+    <string name="soc_label">State of Charge</string>
+    <string name="soh_label">State of Health</string>
+    <string name="aux_soc_label">12V Battery SOC</string>
+    <string name="coolant_temp_label">Coolant Temperature</string>
+    <string name="headlights_label">Headlights</string>
+    <string name="brake_lights_label">Brake Lights</string>
+    <string name="state_on">ON</string>
+    <string name="state_off">OFF</string>
+    <string name="support_developer">☕ Support the developer</string>
+    <string name="tip_chooser_title">Support the developer</string>
+    <string name="tip_thanks">Thank you for your support! ❤️</string>
+    <string name="tip_unavailable">Tips aren\'t available right now. Make sure the app was installed from Google Play.</string>
+</resources>

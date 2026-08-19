@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Car App template host permission. Media apps may only declare MEDIA_TEMPLATES; Play
+         rejects MAP_TEMPLATES / NAVIGATION_TEMPLATES for anything but POI/navigation apps. -->
+    <uses-permission android:name="androidx.car.app.MEDIA_TEMPLATES" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <application
+        android:name=".IoniqVitalsApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.IoniqVitals">
+
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
+        <!-- minCarApiLevel=8: Play requires >=8 for media apps. NOTE: level 1 was needed for the
+             frozen 2022 *sideloaded* DHU host — at 8, gearhead filtered the sideloaded app out of
+             the launcher. That constraint is for sideloading; Play distribution expects >=8. If you
+             sideload-test again, temporarily drop this back to 1. VehicleStatusScreen still uses
+             only level-1 template APIs (setTitle/setHeaderAction), so raising the floor is safe. -->
+        <meta-data
+            android:name="androidx.car.app.minCarApiLevel"
+            android:value="8" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="screenSize|smallestScreenSize|orientation|screenLayout|uiMode">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- TEMPLATE surface (Car App Library) — the active dashboard surface (see SurfaceConfig).
+             The media browser below stays enabled alongside it because a category.MEDIA Car App
+             must be registered as a media app to be reachable in Android Auto. -->
+        <activity
+            android:name="androidx.car.app.activity.CarAppActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:configChanges="screenSize|smallestScreenSize|orientation|screenLayout|uiMode"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+
+        <service
+            android:name=".car.IoniqVitalsCarAppService"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="androidx.car.app.CarAppService" />
+                <!-- category.MEDIA: working surface — sideloaded apps only list via the media
+                     browser on this DHU. (IOT + vending installer spoof tried twice, both DENIED.) -->
+                <category android:name="androidx.car.app.category.MEDIA" />
+            </intent-filter>
+            <meta-data
+                android:name="androidx.car.app.attribution_icon"
+                android:resource="@mipmap/ic_launcher" />
+        </service>
+
+        <!-- Media browser: registers the app as a media app (required for the template above to
+             be reachable). Album-art rendering is gated off in template mode via SurfaceConfig. -->
+        <service
+            android:name=".car.IoniqVitalsMediaBrowserService"
+            android:exported="true"
+            android:enabled="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".obd.ObdReaderService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
+
+        <!-- Wakes the app to auto-connect when the saved OBD dongle connects over Bluetooth (car
+             powers on). ACL_CONNECTED is a protected system broadcast, so exported is safe. -->
+        <receiver
+            android:name=".obd.ObdConnectionReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Serves center-justified tile images to the Android Auto media-browse grid. Exported +
+             grantUriPermissions so the head unit (a different uid) can read the icon URIs. -->
+        <provider
+            android:name=".car.TileImageProvider"
+            android:authorities="com.ioniqvitals.tiles"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+
+    </application>
+
+</manifest>

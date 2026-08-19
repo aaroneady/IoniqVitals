@@ -1,0 +1,1 @@
+# IoniqVitals - default ProGuard rules
